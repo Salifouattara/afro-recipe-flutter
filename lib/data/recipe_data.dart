@@ -49,13 +49,14 @@ Recipe getRecipeById(String id) {
   );
 }
 
-List<Recipe> searchRecipes(String query) {
+List<Recipe> searchRecipes(String query, [List<Recipe>? source]) {
+  final items = source ?? recipes;
   final normalized = query.trim().toLowerCase();
   if (normalized.isEmpty) {
-    return recipes;
+    return items;
   }
 
-  return recipes.where((recipe) {
+  return items.where((recipe) {
     return recipe.title.toLowerCase().contains(normalized) ||
         recipe.category.toLowerCase().contains(normalized) ||
         recipe.description.toLowerCase().contains(normalized);

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../data/recipe_data.dart';
+import '../models/recipe.dart';
 import '../widgets/recipe_card.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  final List<Recipe>? recipes;
+
+  const SearchScreen({super.key, this.recipes});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -16,7 +19,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredRecipes = searchRecipes(query);
+    final filteredRecipes = searchRecipes(query, widget.recipes);
 
     return Scaffold(
       appBar: AppBar(

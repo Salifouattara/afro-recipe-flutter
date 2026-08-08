@@ -61,7 +61,16 @@ Application mobile et web développée avec Flutter dans le cadre du projet de c
    flutter run
    ```
 
+## Tests
+
+Pour exécuter les tests unitaires et les tests de widgets :
+
+```bash
+flutter test
+```
+
 ## Notes
 
 - Assurez-vous que votre environnement Flutter est correctement configuré.
 - Le routeur `GoRouter` gère la navigation et les paramètres dynamiques pour des écrans cohérents.
+- Le formulaire de l’écran d’ajout redirige automatiquement vers l’écran d’accueil après une validation réussie.

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AddRecipeScreen extends StatefulWidget {
   const AddRecipeScreen({super.key});
@@ -23,7 +24,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     super.dispose();
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Recette enregistrée avec succès !')),
@@ -33,6 +34,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
       _categoryController.clear();
       _prepTimeController.clear();
       _descriptionController.clear();
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+      GoRouter.of(context).go('/');
     }
   }
 
@@ -50,6 +53,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
+                key: const Key('titleField'),
                 controller: _titleController,
                 decoration: const InputDecoration(labelText: 'Titre de la recette'),
                 validator: (value) {
@@ -61,6 +65,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                key: const Key('categoryField'),
                 controller: _categoryController,
                 decoration: const InputDecoration(labelText: 'Catégorie'),
                 validator: (value) {
@@ -72,6 +77,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                key: const Key('prepTimeField'),
                 controller: _prepTimeController,
                 decoration: const InputDecoration(labelText: 'Temps de préparation'),
                 validator: (value) {
@@ -83,6 +89,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                key: const Key('descriptionField'),
                 controller: _descriptionController,
                 minLines: 3,
                 maxLines: 5,
