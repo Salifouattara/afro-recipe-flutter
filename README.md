@@ -3,7 +3,27 @@
 ## Description
 
 `my_app` est une application de recettes Flutter qui permet de consulter, rechercher et ajouter des recettes de manière fluide. L’application implémente une navigation propre avec `GoRouter`, un thème clair/sombre, et une interface adaptative pour mobile et tablette.
+# AfroRecipe - Application Flutter Multi-écrans
 
+Application mobile et web développée avec Flutter dans le cadre du projet de certification. Elle permet de découvrir, rechercher, détailler et ajouter des recettes de cuisine.
+
+## 📱 Captures d'écran
+
+| Écran d'Accueil | Écran de Détail | Formulaire d'Ajout |
+| :---: | :---: | :---: |
+| ![Accueil](screenshots/home.png) | ![Détail](screenshots/details.png) | ![Formulaire](screenshots/form.png) |
+
+---
+
+## 🚀 Fonctionnalités
+- **4 Écrans distincts** : Accueil, Recherche avec filtre, Détail de la recette, et Formulaire d'ajout.
+- **Navigation déclarative** : Gestion des routes et paramètres dynamiques via **GoRouter**.
+- **Recherche en temps réel** : Filtrage dynamique de la liste des recettes.
+- **Formulaire sécurisé** : Saisie et validation de champs multiples (Titre, Catégorie, Temps, Description).
+- **Thème dynamique** : Prise en charge native du mode clair (Light) et du mode sombre (Dark).
+- **Design Responsive** : Adaptation automatique de la disposition selon la taille de l'écran (Mobile / Tablette / Desktop).
+
+---
 ## Fonctionnalités implémentées
 
 - Écran d'accueil (`HomeScreen`) avec affichage en grille responsive.
