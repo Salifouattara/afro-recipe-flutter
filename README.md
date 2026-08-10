@@ -1,11 +1,6 @@
-# My App
+# My App - Application Flutter Multi-écrans
 
-## Description
-
-`my_app` est une application de recettes Flutter qui permet de consulter, rechercher et ajouter des recettes de manière fluide. L’application implémente une navigation propre avec `GoRouter`, un thème clair/sombre, et une interface adaptative pour mobile et tablette.
-# AfroRecipe - Application Flutter Multi-écrans
-
-Application mobile et web développée avec Flutter dans le cadre du projet de certification. Elle permet de découvrir, rechercher, détailler et ajouter des recettes de cuisine.
+`my_app` est une application de recettes Flutter qui permet de consulter, rechercher et ajouter des recettes de manière fluide. Application mobile et web développée avec Flutter permettant de découvrir, rechercher, détailler et ajouter des recettes de cuisine avec une interface intuitive et responsive.
 
 ## 📱 Captures d'écran
 
@@ -24,29 +19,71 @@ Application mobile et web développée avec Flutter dans le cadre du projet de c
 - **Design Responsive** : Adaptation automatique de la disposition selon la taille de l'écran (Mobile / Tablette / Desktop).
 
 ---
-## Fonctionnalités implémentées
 
-- Écran d'accueil (`HomeScreen`) avec affichage en grille responsive.
-- Écran de recherche (`SearchScreen`) avec filtrage en temps réel.
-- Écran de détail (`DetailScreen`) avec paramètre dynamique d’URL (`/detail/:id`).
-- Écran de formulaire (`AddRecipeScreen`) avec validation sur au moins 3 champs texte.
-- Navigation structurée avec `GoRouter` pour les routes `/`, `/search`, `/add` et `/detail/:id`.
-- Support du mode clair et sombre via `ThemeData` et `ThemeMode.system`.
-- Design adaptatif pour mobile et tablette à l’aide de `MediaQuery`.
+## 🏗️ Architecture
 
-## Détails techniques
+L'application suit le pattern **Repository Pattern** pour une séparation claire des responsabilités. Cette architecture facilite la testabilité, la maintenabilité et la scalabilité du projet.
 
-- Utilisation d’un modèle de données `Recipe` dans `lib/models/recipe.dart`.
-- Jeu de données source centralisé dans `lib/data/recipe_data.dart`.
-- Widgets réutilisables dans `lib/widgets/` :
-  - `RecipeCard`
-  - `CustomHeader`
-  - `ActionNavButton`
-- Séparation claire entre données, UI et navigation.
-- Plus de 8 widgets Flutter utilisés pour structurer l’application proprement.
-- Route `/add` configurée dans `lib/main.dart` pour `AddRecipeScreen`.
+### Hiérarchie Architecturale
 
-## Lancement
+```
+Models
+  ├─ recipe.dart (Classe Recette immuable)
+  
+Repositories
+  ├─ recipe_repository.dart (Accès aux données centralisé)
+  
+Screens
+  ├─ home_screen.dart (Affichage en grille)
+  ├─ search_screen.dart (Recherche et filtrage)
+  ├─ detail_screen.dart (Détails d'une recette)
+  └─ add_recipe_screen.dart (Formulaire d'ajout)
+  
+Widgets
+  ├─ recipe_card.dart (Carte de recette)
+  ├─ custom_header.dart (En-tête personnalisé)
+  └─ action_nav_button.dart (Bouton d'action)
+```
+
+### Repository Pattern
+
+**RecipeRepository** (`lib/repositories/recipe_repository.dart`) centralise tout l'accès aux données :
+- `getAllRecipes()` - Retourne la liste complète (immuable)
+- `searchRecipes(String query)` - Recherche multi-champs (titre, catégorie, description)
+- `getRecipesByCategory(String category)` - Filtre par catégorie
+- `getRecipeById(String id)` - Récupère une recette spécifique
+- `addRecipe(Recipe recipe)` - Ajoute une nouvelle recette
+- `getAllCategories()` - Liste les catégories uniques
+- `getRecipeCount()` - Nombre total de recettes
+- `searchRecipesLimited(String query, int limit)` - Recherche paginée
+
+### Navigation et Routing
+
+L'application utilise **GoRouter** pour une navigation déclarative :
+- `/` - HomeScreen (Affichage principal en grille)
+- `/search` - SearchScreen (Recherche et filtrage)
+- `/add` - AddRecipeScreen (Formulaire d'ajout de recette)
+- `/detail/:id` - DetailScreen (Détail paramétré)
+
+### Modèle de Données
+
+**Recipe** (`lib/models/recipe.dart`) est une classe immuable avec :
+- `id` - Identifiant unique
+- `title` - Titre de la recette
+- `category` - Catégorie (Entrée, Plat principal, Boisson, Dessert)
+- `prepTime` - Temps de préparation
+- `description` - Description complète (20+ caractères)
+- `imageUrl` - URL de l'image
+
+### Widgets Réutilisables
+
+- **RecipeCard** - Affiche une carte de recette avec image, titre, catégorie et temps. Utilisé dans HomeScreen et SearchScreen.
+- **CustomHeader** - En-tête personnalisé avec titre et sous-titre pour une mise en page cohérente.
+- **ActionNavButton** - Bouton d'action stylisé avec icône et libellé suivant Material 3.
+
+---
+
+## 🚀 Démarrage et Utilisation
 
 1. Ouvrir un terminal dans le répertoire du projet :
    ```bash
@@ -56,12 +93,12 @@ Application mobile et web développée avec Flutter dans le cadre du projet de c
    ```bash
    flutter pub get
    ```
-3. Lancer l’application :
+3. Lancer l'application :
    ```bash
    flutter run
    ```
 
-## Tests
+## 🧪 Suite de Tests
 
 Pour exécuter les tests unitaires et les tests de widgets :
 
@@ -69,8 +106,25 @@ Pour exécuter les tests unitaires et les tests de widgets :
 flutter test
 ```
 
-## Notes
+L'application inclut une suite de tests complète :
+- **test/repositories/recipe_repository_test.dart** - 40+ tests pour le RecipeRepository couvrant tous les cas d'usage
+- **test/widgets_test.dart** - 15+ tests pour les widgets (RecipeCard, CustomHeader, ActionNavButton)
+- **test/search_add_screen_test.dart** - 15+ tests d'intégration pour les écrans SearchScreen et AddRecipeScreen
+- **test/recipe_model_test.dart** - Tests du modèle Recipe
 
-- Assurez-vous que votre environnement Flutter est correctement configuré.
-- Le routeur `GoRouter` gère la navigation et les paramètres dynamiques pour des écrans cohérents.
-- Le formulaire de l’écran d’ajout redirige automatiquement vers l’écran d’accueil après une validation réussie.
+## 🛠️ Technologies Utilisées
+
+- **Flutter** 3.12.2+
+- **GoRouter** 8.0.0+ (Navigation déclarative)
+- **Material 3** Design System
+- **flutter_test** Framework pour les tests
+- **flutter_lints** Analyse statique du code
+
+## 📝 Notes Importantes
+
+- L'application suit le **pattern Repository** pour une architecture scalable et testable
+- Tous les **widgets sont réutilisables** et documentés via doc comments
+- La **navigation gère les paramètres dynamiques** pour un routage cohérent
+- Le **formulaire d'ajout persiste les recettes** via RecipeRepository
+- **Support complet du thème** clair et sombre (Material 3)
+- Assurez-vous que votre environnement **Flutter est correctement configuré**

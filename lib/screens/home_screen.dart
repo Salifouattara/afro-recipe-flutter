@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../data/recipe_data.dart';
+import '../repositories/recipe_repository.dart';
 import '../widgets/custom_header.dart';
 import '../widgets/recipe_card.dart';
 
@@ -10,9 +10,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final recipeRepository = RecipeRepository();
     final width = MediaQuery.of(context).size.width;
     final isTablet = width >= 600;
     final crossAxisCount = isTablet ? 2 : 1;
+    final allRecipes = recipeRepository.getAllRecipes();
 
     return Scaffold(
       appBar: AppBar(
@@ -41,7 +43,7 @@ class HomeScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: GridView.builder(
-                  itemCount: recipes.length,
+                  itemCount: allRecipes.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: crossAxisCount,
                     crossAxisSpacing: 16,
@@ -49,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                     childAspectRatio: isTablet ? 1.6 : 1.2,
                   ),
                   itemBuilder: (context, index) {
-                    final recipe = recipes[index];
+                    final recipe = allRecipes[index];
                     return RecipeCard(
                       recipe: recipe,
                       onTap: () => context.push('/detail/${recipe.id}'),

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../data/recipe_data.dart';
-import '../models/recipe.dart';
+import '../repositories/recipe_repository.dart';
 import '../widgets/recipe_card.dart';
 
 class SearchScreen extends StatefulWidget {
-  final List<Recipe>? recipes;
-
-  const SearchScreen({super.key, this.recipes});
+  const SearchScreen({super.key});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -16,15 +13,14 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   String query = '';
+  final RecipeRepository _recipeRepository = RecipeRepository();
 
   @override
   Widget build(BuildContext context) {
-    final filteredRecipes = searchRecipes(query, widget.recipes);
+    final filteredRecipes = _recipeRepository.searchRecipes(query);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Recherche'),
-      ),
+      appBar: AppBar(title: const Text('Recherche')),
       body: Column(
         children: [
           Padding(
@@ -42,7 +38,9 @@ class _SearchScreenState extends State<SearchScreen> {
             child: filteredRecipes.isEmpty
                 ? Center(
                     child: Text(
-                      query.isEmpty ? 'Aucune recette disponible.' : 'Aucune recette ne correspond à votre recherche.',
+                      query.isEmpty
+                          ? 'Aucune recette disponible.'
+                          : 'Aucune recette ne correspond à votre recherche.',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   )

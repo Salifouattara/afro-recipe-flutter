@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../models/recipe.dart';
+import '../repositories/recipe_repository.dart';
+
 class AddRecipeScreen extends StatefulWidget {
   const AddRecipeScreen({super.key});
 
@@ -14,6 +17,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _prepTimeController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final RecipeRepository _recipeRepository = RecipeRepository();
 
   @override
   void dispose() {
@@ -26,25 +30,38 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
 
   Future<void> _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Recette enregistrée avec succès !')),
+      // Créer une nouvelle recette avec les données du formulaire
+      final newRecipe = Recipe(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        title: _titleController.text,
+        category: _categoryController.text,
+        prepTime: _prepTimeController.text,
+        description: _descriptionController.text,
+        imageUrl: '',
       );
-      _formKey.currentState?.reset();
-      _titleController.clear();
-      _categoryController.clear();
-      _prepTimeController.clear();
-      _descriptionController.clear();
-      await Future<void>.delayed(const Duration(milliseconds: 200));
-      GoRouter.of(context).go('/');
+
+      // Ajouter la recette au repository
+      _recipeRepository.addRecipe(newRecipe);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Recette enregistrée avec succès !')),
+        );
+        _formKey.currentState?.reset();
+        _titleController.clear();
+        _categoryController.clear();
+        _prepTimeController.clear();
+        _descriptionController.clear();
+        await Future<void>.delayed(const Duration(milliseconds: 200));
+        GoRouter.of(context).go('/');
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ajouter une recette'),
-      ),
+      appBar: AppBar(title: const Text('Ajouter une recette')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -55,7 +72,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               TextFormField(
                 key: const Key('titleField'),
                 controller: _titleController,
-                decoration: const InputDecoration(labelText: 'Titre de la recette'),
+                decoration: const InputDecoration(
+                  labelText: 'Titre de la recette',
+                ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Veuillez saisir un titre.';
@@ -79,7 +98,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               TextFormField(
                 key: const Key('prepTimeField'),
                 controller: _prepTimeController,
-                decoration: const InputDecoration(labelText: 'Temps de préparation'),
+                decoration: const InputDecoration(
+                  labelText: 'Temps de préparation',
+                ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Veuillez saisir un temps de préparation.';
