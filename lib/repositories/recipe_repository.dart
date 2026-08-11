@@ -4,8 +4,8 @@ import '../models/recipe.dart';
 /// Cette classe centralise la gestion des recettes, permettant une séparation
 /// claire entre la logique métier et la présentation.
 class RecipeRepository {
-  // Données source centralisées
-  static final List<Recipe> _recipes = [
+  // Seed data used to initialize new repository instances
+  static final List<Recipe> _seedRecipes = [
     const Recipe(
       id: '1',
       title: 'Salade méditerranéenne',
@@ -46,10 +46,22 @@ class RecipeRepository {
     ),
   ];
 
+  /// Shared singleton instance. Use `RecipeRepository.shared` when you want a
+  /// single shared in-memory store for the running app.
+  static final RecipeRepository shared = RecipeRepository._shared();
+
+  /// Underlying list of recipes for this repository instance.
+  final List<Recipe> _recipes;
+
+  /// Default constructor: creates a fresh repository instance seeded with
+  /// the initial sample data. Useful for tests or isolated usage.
+  RecipeRepository() : _recipes = List<Recipe>.from(_seedRecipes);
+
+  /// Private named constructor used for the shared singleton.
+  RecipeRepository._shared() : _recipes = List<Recipe>.from(_seedRecipes);
+
   /// Récupère la liste complète des recettes
-  List<Recipe> getAllRecipes() {
-    return List.unmodifiable(_recipes);
-  }
+  List<Recipe> getAllRecipes() => List.unmodifiable(_recipes);
 
   /// Récupère une recette par son identifiant
   /// Retourne une recette par défaut si non trouvée

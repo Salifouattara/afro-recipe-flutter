@@ -6,7 +6,11 @@
 
 | Écran d'Accueil | Écran de Détail | Formulaire d'Ajout |
 | :---: | :---: | :---: |
-| ![Accueil](screenshots/home.png) | ![Détail](screenshots/details.png) | ![Formulaire](screenshots/form.png) |
+| ![Accueil](screenshots/home.png) | ![Détail](screenshots/detailscd C:\Users\SALIF OUATTARA\Desktop\flutter\my_app
+flutter pub get
+flutter analyze
+flutter test
+# optionnel: flutter build apk.png) | ![Formulaire](screenshots/form.png) |
 
 ---
 
@@ -106,11 +110,11 @@ Pour exécuter les tests unitaires et les tests de widgets :
 flutter test
 ```
 
-L'application inclut une suite de tests complète :
-- **test/repositories/recipe_repository_test.dart** - 40+ tests pour le RecipeRepository couvrant tous les cas d'usage
-- **test/widgets_test.dart** - 15+ tests pour les widgets (RecipeCard, CustomHeader, ActionNavButton)
-- **test/search_add_screen_test.dart** - 15+ tests d'intégration pour les écrans SearchScreen et AddRecipeScreen
-- **test/recipe_model_test.dart** - Tests du modèle Recipe
+L'application inclut une suite de tests située dans le dossier `test/` :
+- `test/repositories/recipe_repository_test.dart` — tests unitaires pour `RecipeRepository`.
+- `test/widgets_test.dart` — tests de widgets (covers `RecipeCard`, `CustomHeader`, `ActionNavButton`).
+- `test/search_add_screen_test.dart` — tests d'intégration pour `SearchScreen` et `AddRecipeScreen` (utilise `GoRouter` pour l'intégration).
+- `test/recipe_model_test.dart` — tests pour le modèle `Recipe`.
 
 ## 🛠️ Technologies Utilisées
 
