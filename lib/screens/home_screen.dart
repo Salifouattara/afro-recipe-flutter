@@ -10,10 +10,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recipeRepository = RecipeRepository();
-    final width = MediaQuery.of(context).size.width;
-    final isTablet = width >= 600;
-    final crossAxisCount = isTablet ? 2 : 1;
+    final recipeRepository = RecipeRepository.shared;
     final allRecipes = recipeRepository.getAllRecipes();
 
     return Scaffold(
@@ -32,35 +29,58 @@ class HomeScreen extends StatelessWidget {
         label: const Text('Ajouter'),
       ),
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomHeader(
-              title: 'Bienvenue',
-              subtitle: 'Découvrez des recettes faciles et rapides à préparer.',
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: GridView.builder(
-                  itemCount: allRecipes.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    childAspectRatio: isTablet ? 1.6 : 1.2,
-                  ),
-                  itemBuilder: (context, index) {
-                    final recipe = allRecipes[index];
-                    return RecipeCard(
-                      recipe: recipe,
-                      onTap: () => context.push('/detail/${recipe.id}'),
-                    );
-                  },
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final maxWidth = constraints.maxWidth;
+            final crossAxisCount = maxWidth >= 900
+                ? 3
+                : maxWidth >= 600
+                ? 2
+                : 1;
+            final childAspectRatio = maxWidth >= 900
+                ? 1.5
+                : maxWidth >= 600
+                ? 1.6
+                : 1.2;
+
+            return Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1200),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const CustomHeader(
+                      title: 'Bienvenue',
+                      subtitle:
+                          'Découvrez des recettes faciles et rapides à préparer.',
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: GridView.builder(
+                          itemCount: allRecipes.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: crossAxisCount,
+                                crossAxisSpacing: 16,
+                                mainAxisSpacing: 16,
+                                childAspectRatio: childAspectRatio,
+                              ),
+                          itemBuilder: (context, index) {
+                            final recipe = allRecipes[index];
+                            return RecipeCard(
+                              recipe: recipe,
+                              onTap: () => context.push('/detail/${recipe.id}'),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

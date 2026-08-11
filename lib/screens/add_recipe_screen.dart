@@ -58,93 +58,141 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     }
   }
 
+  Widget _buildFormFields({required bool wide}) {
+    final titleField = TextFormField(
+      key: const Key('titleField'),
+      controller: _titleController,
+      decoration: const InputDecoration(labelText: 'Titre de la recette'),
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Veuillez saisir un titre.';
+        }
+        return null;
+      },
+    );
+
+    final categoryField = TextFormField(
+      key: const Key('categoryField'),
+      controller: _categoryController,
+      decoration: const InputDecoration(labelText: 'Catégorie'),
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Veuillez saisir une catégorie.';
+        }
+        return null;
+      },
+    );
+
+    final prepTimeField = TextFormField(
+      key: const Key('prepTimeField'),
+      controller: _prepTimeController,
+      decoration: const InputDecoration(labelText: 'Temps de préparation'),
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Veuillez saisir un temps de préparation.';
+        }
+        return null;
+      },
+    );
+
+    final descriptionField = TextFormField(
+      key: const Key('descriptionField'),
+      controller: _descriptionController,
+      minLines: wide ? 8 : 4,
+      maxLines: wide ? 12 : 6,
+      decoration: const InputDecoration(labelText: 'Description'),
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Veuillez saisir une description.';
+        }
+        if (value.trim().length < 20) {
+          return 'La description doit contenir au moins 20 caractères.';
+        }
+        return null;
+      },
+    );
+
+    final submitButton = ElevatedButton(
+      onPressed: () {
+        _formKey.currentState!.validate();
+        _submitForm();
+      },
+      child: const Padding(
+        padding: EdgeInsets.symmetric(vertical: 14),
+        child: Text('Enregistrer la recette'),
+      ),
+    );
+
+    if (wide) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                titleField,
+                const SizedBox(height: 16),
+                categoryField,
+                const SizedBox(height: 16),
+                prepTimeField,
+              ],
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                descriptionField,
+                const SizedBox(height: 24),
+                submitButton,
+              ],
+            ),
+          ),
+        ],
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        titleField,
+        const SizedBox(height: 16),
+        categoryField,
+        const SizedBox(height: 16),
+        prepTimeField,
+        const SizedBox(height: 16),
+        descriptionField,
+        const SizedBox(height: 24),
+        submitButton,
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Ajouter une recette')),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 700),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    TextFormField(
-                      key: const Key('titleField'),
-                      controller: _titleController,
-                      decoration: const InputDecoration(
-                        labelText: 'Titre de la recette',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Veuillez saisir un titre.';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      key: const Key('categoryField'),
-                      controller: _categoryController,
-                      decoration: const InputDecoration(labelText: 'Catégorie'),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Veuillez saisir une catégorie.';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      key: const Key('prepTimeField'),
-                      controller: _prepTimeController,
-                      decoration: const InputDecoration(
-                        labelText: 'Temps de préparation',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Veuillez saisir un temps de préparation.';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      key: const Key('descriptionField'),
-                      controller: _descriptionController,
-                      minLines: 3,
-                      maxLines: 6,
-                      decoration: const InputDecoration(
-                        labelText: 'Description',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Veuillez saisir une description.';
-                        }
-                        if (value.trim().length < 20) {
-                          return 'La description doit contenir au moins 20 caractères.';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: _submitForm,
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 14),
-                        child: Text('Enregistrer la recette'),
-                      ),
-                    ),
-                  ],
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth >= 720;
+
+          return Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 900),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: _formKey,
+                    child: _buildFormFields(wide: isWide),
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
