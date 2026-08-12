@@ -13,7 +13,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   String query = '';
-  final RecipeRepository _recipeRepository = RecipeRepository();
+  final RecipeRepository _recipeRepository = RecipeRepository.shared;
 
   @override
   Widget build(BuildContext context) {

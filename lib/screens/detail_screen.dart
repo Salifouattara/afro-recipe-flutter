@@ -5,7 +5,7 @@ import '../repositories/recipe_repository.dart';
 
 class DetailScreen extends StatelessWidget {
   final String recipeId;
-  final RecipeRepository _recipeRepository = RecipeRepository();
+  final RecipeRepository _recipeRepository = RecipeRepository.shared;
 
   DetailScreen({super.key, required this.recipeId});
 
