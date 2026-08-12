@@ -6,13 +6,7 @@
 
 | Écran d'Accueil | Écran de Détail | Formulaire d'Ajout |
 | :---: | :---: | :---: |
-| ![Accueil](screenshots/home.png) | ![Détail](screenshots/detailscd C:\Users\SALIF OUATTARA\Desktop\flutter\my_app
-flutter pub get
-flutter analyze
-flutter test
-# optionnel: flutter build apk.png) | ![Formulaire](screenshots/form.png) |
-
----
+| ![Accueil](screenshots/home.png) | ![Détail](screenshots/detail.png) | ![Recherche](screenshots/search.png) |
 
 ## 🚀 Fonctionnalités
 - **4 Écrans distincts** : Accueil, Recherche avec filtre, Détail de la recette, et Formulaire d'ajout.
